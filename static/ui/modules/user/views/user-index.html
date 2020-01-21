@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-md-4">
+         <p class="alert alert-success" style='margin-top:10px;font-weight:bold;'>
+        حجم اعتبار خریداری شما در سه ماه اخیر
+         {{totalCredit}}
+           مگابایت است
+         </p>
+    </div>
+    <div class="col-md-4">
+          <p class="alert alert-warning"  style='margin-top:10px;font-weight:bold;'>
+          حجم باقی مانده ی اعتبار سه ماه شما
+          {{restCredit}}
+          مگابایت است
+          </p>
+     </div>
+     <div class="col-md-4">
+          <p class="alert alert-danger"  style='margin-top:10px;font-weight:bold;'>
+          حجم مصرف شده سه ماه اخیر شما
+          {{userUsage}}
+            مگابایت است
+          </p>
+     </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+   <div class="pull-left">
+ 
+  <button ng-click="openSubscribeModal()" class="btn btn-primary pull-right" style="margin-bottom:10px;"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;ثبت درخواست دانلود</button>
+  <button ng-click="openPurchaseModal()" class="btn btn-primary pull-right" style="margin-right:5px;margin-bottom:10px;"><i class="fa fa-money" aria-hidden="true"></i>&nbsp;خرید حجم</button>
+  <button ng-click="openResetModal()" class="btn btn-primary pull-right" style="margin-right:5px;margin-bottom:10px;"><i class="fa fa-key" aria-hidden="true"></i>&nbsp;تغییر رمز عبور</button>
+   <button ng-click="refresh()" class="btn btn-primary pull-right" style="margin-right:5px;margin-bottom:10px;"><i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;
+بروزرسانی لیست</button>
+
+   </div>
+    <div class="pull-right">
+          <div class="dropdown" uib-dropdown="" style="margin-bottom:10px;">
+                         <a aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle"  style="cursor:pointer" uib-dropdown-toggle="">{{listname}}&nbsp;<b class="caret"></b></a>
+                         <ul class="dropdown-menu" uib-dropdown-menu="" role="menu" aria-labelledby="split-button">
+                             <li role="menuitem">
+                                 <a ng-click="getPagePremium()" style="cursor:pointer">
+                                     مشاهده تاریخچه دانلود های ویژه
+                                 </a>
+                             </li>
+                             <li role="menuitem">
+                                 <a ng-click="getPage()" style="cursor:pointer">
+                                     مشاهده تاریخچه دانلودهای عادی
+                                 </a>
+                             </li>
+                             <li class="divider"></li>
+                             <li role="menuitem">
+                                 <a ng-click="getPurchesList()" style="cursor:pointer">
+                                     مشاهده لیست خرید های انجام شده
+                                 </a>
+                             </li>
+                         </ul>
+           </div>
+
+
+    </div>
+     <div class="clearfix"></div>
+  </div>
+</div>
+<div class="row">
+ <div class="col-md-12">
+
+         <div  ui-grid="gridOptions" ui-grid-resize-columns ui-grid-pagination class="myGrid" dir="rtl"></div>
+         <p style="color:#F37021;font-size:12px;text-align:center">
+در این قسمت شما میتوانید اقدام به دانلود لینک های
+<b>
+ مستقیم، تورنت، مگنت، ویدیوی توییتر و کانال یوتیوب 
+ </b>
+ بنمایید
+        </p>
+  </div>
+</div>

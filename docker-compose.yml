@@ -1,0 +1,30 @@
+---
+version: '3'
+services:
+  downloadchibashi:
+    image: downloadchibashi:latest
+    container_name: downloadchibashi_app
+    build: .
+    networks:
+      - downloadchibashi-network
+    restart: unless-stopped
+    volumes:
+      - ./static/downloads/:/app/static/downloads/
+    expose:
+      - "8080"
+  webserver:
+    image: nginx:latest
+    container_name: downloadchibashi_nginx
+    networks:
+      - downloadchibashi-network
+    #     - default
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    volumes:
+      - ./static/downloads/:/var/www/html/
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+networks:
+  downloadchibashi-network:
+    driver: bridge

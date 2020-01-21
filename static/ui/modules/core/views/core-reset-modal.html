@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="dismissModal()" aria-label="Close"><span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title">بازیابی رمز عبور</h4>
+</div>
+<div id="modal-body" class="modal-body">
+
+      <form id="reset-from" name="resetForm" ng-submit="reset(resetForm)">
+          <input type="password" class="hidden">
+          <div class="row">
+              <div class="col-xs-12 form-group">
+                  <label class="control-label">رمز عبور</label>
+                  <input type="password"
+                          ng-model="model.password"
+                          class="form-control"
+                          required>
+              </div>
+              <div class="col-xs-12 form-group">
+                  <label class="control-label">تکرار رمز عبور</label>
+                  <input type="password"
+                          ng-model="model.confirmPassword"
+                          class="form-control"
+                          required>
+              </div>
+              <div class="col-xs-12 form-group">
+                    <button type="submit" form="reset-from" class="btn btn-primary">ثبت رمز عبور جدید</button>
+              </div>
+          </div>
+      </form>
+
+    <div class="clearfix"></div>
+</div>
+<div class="modal-footer text-left">
+
+</div>

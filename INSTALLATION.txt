@@ -1,0 +1,366 @@
+INSTALLATION REQUIERMENT:
+
+apt-get install python-pip python-dev libmysqlclient-dev
+apt-get install -y python-lxml
+apt-get install aria2
+
+pip install -r requirements.txt
+
+
+CRONTAB:
+0 5 * * *  pip install --upgrade youtube_dl
+*/5 * * * *  /root/files/bash_cron_delete.sh
+
+
+YOUTUBE API:
+Add new server IP to youtube google developer console:
+https://console.developers.google.com/apis/credentials/key/2?project=pathseeker-1087&hl=de
+
+SYSTEMD:
+/etc/systemd/system/downloadchibashi.service
+[Unit]
+Description=Gunicorn instance to server downloadchibashi
+After=network.target
+
+[Service]
+WorkingDirectory=/home/tubeuser/www/downloadchibashi
+ExecStart=/usr/local/bin/gunicorn -w 4 -b 127.0.0.1:4000 --access-logfile /var/log/gunicorn-access.log --error-logfile /var/log/gunicorn-error.log downloadchibashi:appA
+
+
+[Install]
+WantedBy=multi-user.target
+
+
+DOCKER:
+docker run --name mysql  -v /root/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=Zanjan1386 -d mysql
+docker run -it --name downloadchibashi_main -v /var/www/html:/root/final_downloadchibashi/static/downloads --link mysql:mysql -p 80:8000 ubuntu:downloadchibashi
+docker run -it --name webserver -v /root/files:/var/www/html -p 8080:80 ubuntu:apache
+
+/usr/local/bin/gunicorn -w 4 -b 0.0.0.0:8080 --access-logfile /var/log/gunicorn-access.log --error-logfile /var/log/gunicorn-error.log downloadchibashi:app
+
+REMEMBER: in every code change reset gunicorn for ensuring everything works well
+
+$MYSQL_PORT_3306_TCP_ADDR
+
+docker-compose.yml
+downloadchibashi:
+  image: ubuntu:downloadchibashi
+  volumes:
+    - ./web:/root/final_downloadchibashi
+  ports:
+    - 80:8080
+  links:
+    - mysql
+  tty: true
+mysql:
+  image: mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=Zanjan1386
+  volumes:
+    - ./mysql:/var/lib/mysql
+
+
+
+
+
+APACHE:
+cat /etc/apache2/sites-available/000-default.conf
+<VirtualHost *:9090>
+
+<Directory /var/www/html>
+       Options +Indexes
+       AllowOverride All
+
+       Order allow,deny
+       Allow from all
+       Require all granted
+</Directory>
+
+htaccess_files_force_download.txt
+
+Configure Apache mod_rewrite :
+a2enmod rewrite
+
+add the following code to /etc/apache2/sites-available/default
+AllowOverride All
+
+Restart apache
+
+On your command line:
+
+Install mod_headers
+
+sudo a2enmod headers
+
+and then restart apache
+
+service apache2 restart
+
+
+
+<Files *.*>
+        ForceType application/octet-stream
+        Header set Content-Disposition attachment
+</Files>
+
+NGINX:
+
+https://gtmetrix.com/leverage-browser-caching.html
+https://www.digitalocean.com/community/questions/leverage-browser-caching-for-nginx
+
+/etc/nginx/sites-available/downloadchibashi
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files $uri $uri/ =404;
+	}
+
+}
+
+
+server {
+    listen 80;
+    server_name downloadchibashi.com;
+    server_name www.downloadchibashi.com;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:4000;
+    }
+}
+
+server {
+    listen 80;
+    server_name webdisk2.downloadchibashi.com;
+    server_name www.webdisk2.downloadchibashi.com;
+    root /home/tubeuser/www/downloadchibashi/static/downloads;
+
+    	location / {
+		autoindex on;
+		index  index.html index.htm;
+		charset UTF-8;
+    	}
+
+	location ~* "\.[a-zA-Z0-9_]{3}$" {
+		add_header Content-disposition "attachment";
+	}
+
+}
+
+server {
+    listen 80;
+    server_name blog.downloadchibashi.com;
+    server_name www.blog.downloadchibashi.com;
+
+    root /home/tubeuser/www/blog;
+    index index.php index.html index.htm index.nginx-debian.html;
+
+    location / {
+        #try_files $uri $uri/ =404;
+	try_files $uri $uri/ /index.php?q=$uri&$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+server {
+    listen 80;
+    server_name vip.downloadchibashi.com;
+    server_name www.vip.downloadchibashi.com;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:8000;
+    }
+
+    location ~*  \.(jpg|jpeg|png|gif|ico|css|js)$ {
+        expires 365d;
+        include proxy_params;
+        proxy_pass http://127.0.0.1:8000;
+    }
+}
+
+server {
+    listen 80;
+    server_name webdisk3.downloadchibashi.com;
+    server_name www.webdisk3.downloadchibashi.com;
+    root /var/www/vip/static/users_downloads;
+
+        location / {
+                autoindex on;
+                index  index.html index.htm;
+                charset UTF-8;
+                autoindex_exact_size off;
+        }
+
+        location ~* "\..{3}$" {
+                add_header Content-disposition "attachment";
+        }
+
+}
+
+
+
+
+
+OTHER:
+apt-get install libapache2-mod-wsgi
+a2enmod wsgi
+
+apt-get install libmysqlclient-dev
+apt-get install python-mysqldb
+apt-get install python-pip
+pip install --upgrade pip
+pip install --upgrade google-api-python-client
+pip install --upgrade youtube_dl
+pip install Flask
+
+a2enmod headers
+service apache2 restart
+
+
+useradd -m tubeuser
+mkdir -p /home/tubeuser/www/downloadchibashi/
+mkdir -p /home/tubeuser/www/downloadchibashi/static/downloads/
+
+crontab -e
+00  5 * * * /usr/local/bin/pip install --upgrade youtube_dl
+*/5 * * * * /home/tubeuser/www/downloadchibashi/bash_cron_delete.sh
+*/1 * * * * python /var/www/vip/premium_downloader_manager.py
+
+
+cat /home/tubeuser/www/downloadchibashi/bash_cron_delete.sh
+
+# !/bin/bash
+find /home/tubeuser/www/downloadchibashi/static/downloads/*  -cmin +300  -exec /bin/rm -rf "{}" \;
+find /home/tubeuser/www/downloadchibashi/static/users_downloads/*  -cmin +3000  -exec /bin/rm -rf "{}" \;
+find /var/www/vip/static/torrents/  -cmin +3000  -exec /bin/rm -rf "{}" \;
+
+
+<VirtualHost *:80>
+
+    ServerName downloadchibashi.com
+    ServerAlias www.downloadchibashi.com
+    ServerAdmin info@downloadchibashi.com
+
+    WSGIDaemonProcess downloadchibashi user=tubeuser group=tubeuser threads=5 python-path=/home/tubeuser/www/downloadchibashi/ home=/home/tubeuser/www/downloadchibashi
+
+    WSGIScriptAlias / /home/tubeuser/www/downloadchibashi/downloadchibashi.wsgi
+    DocumentRoot /home/tubeuser/www/downloadchibashi/static
+    <Directory /home/tubeuser/www/downloadchibashi/>
+           WSGIProcessGroup downloadchibashi
+           WSGIApplicationGroup %{GLOBAL}
+        Options -Indexes
+        AllowOverride All
+
+        Order allow,deny
+        Allow from all
+	Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/downloadchibashi_error.log
+    CustomLog ${APACHE_LOG_DIR}/downloadchibashi_access.log combined
+
+    # For most configuration files from conf-available/, which are
+    # enabled or disabled at a global level, it is possible to
+    # include a line for only one particular virtual host. For example the
+    # following line enables the CGI configuration for this host only
+    # after it has been globally disabled with "a2disconf".
+    #Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+
+
+<VirtualHost *:80>
+ServerName webdisk2.downloadchibashi.com
+ServerAlias www.webdisk2.downloadchibashi.com
+DocumentRoot /home/tubeuser/www/downloadchibashi/static/downloads/
+<Directory /home/tubeuser/www/downloadchibashi/static/downloads/>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+
+        Order allow,deny
+        Allow from all
+        Require all granted
+
+    <Files *.*>
+        ForceType application/octet-stream
+        Header set Content-Disposition attachment
+    </Files>
+
+</Directory>
+
+</VirtualHost>
+
+
+<VirtualHost *:80>
+ServerName blog.downloadchibashi.com
+ServerAlias www.blog.downloadchibashi.com
+DocumentRoot /home/tubeuser/www/blog
+<Directory /home/tubeuser/www/blog>
+        Options -Indexes
+        Require all granted
+	AllowOverride All
+</Directory>
+
+</VirtualHost>
+
+
+scripts/backup/base-packages.sh
+apt-get install -y htop
+apt-get install -y atop
+apt-get install -y ncdu
+apt-get install -y tcpdump
+apt-get install -y iptraf
+apt-get install -y sysstat
+apt-get install -y iotop
+apt-get install -y screen
+apt-get install -y vim
+apt-get install -y mtr
+apt-get install -y traceroute
+apt-get install -y arping
+apt-get install -y ethtool
+apt-get install -y lsof
+apt-get install -y ntpdate
+apt-get install -y mlocate
+apt-get install -y dlocate
+apt-get install -y dnsutils
+apt-get install -y rcconf
+apt-get install -y build-essential
+apt-get install -y gdisk
+apt-get install -y lvm2
+apt-get install -y ifenslave-2.6
+apt-get install -y tree
+apt-get install -y links
+apt-get install -y curl
+apt-get install -y xfsprogs
+apt-get install -y less
+apt-get install -y rsync
+apt-get install -y whois
+root@hetzner4 ~ #
+
+
+
+sudo dpkg-reconfigure tzdata
+And follow on screen instructions. Easy.
+
+Also be sure to restart cron as it won’t pick up the timezone change and will still be running on UTC.
+/etc/init.d/cron stop
+/etc/init.d/cron start
+
+apt-get install mariadb-server
+apt-get install nginx

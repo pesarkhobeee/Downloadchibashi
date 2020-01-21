@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="dismissModal()" aria-label="Close"><span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title">ثبت درخواست دانلود</h4>
+</div>
+<div id="modal-body" class="modal-body">
+    <form id="subscribe-from" name="subscribeForm" ng-submit="subscribe(subscribeForm)">
+        <div class="row">
+            <div class="col-xs-12 form-group">
+                <label class="control-label">ادرس لینک موردنظر : </label>
+                <input type="text"
+                        ng-model="model.email"
+                        class="form-control"
+                        autofocus
+                        required>
+            </div>
+        </div>
+
+    </form>
+        <p style="color:#F37021;font-size:12px;text-align:center">
+            توجه: اگر مایل به انتخاب کیفیت تک ویدیوهای یوتیوب هستید از صفحه خانه اقدام به دانلود کنید.
+            </p>
+    <p style="font-size:11px;margin:5px 0;">
+متاسفانه بدلیل مشکلات قانونی دانلود تورنت و مگنت دیگر امکانپذیر نمیباشد
+    </p>
+    <!--
+        <div class="btn btn-primary col-xs-12" ngf-select="upload($file)"  ngf-pattern="'.torrent'"
+    ngf-accept="'.torrent'" >انتخاب فایل تورنت</div>
+-->
+    <div class="clearfix"></div>
+</div>
+<div class="modal-footer text-left">
+    <p style="color:#F37021;font-size:12px;text-align:center">
+توجه: پس از اتمام دانلود، گزارش ان به پست الکترونیکی شما فرستاده خواهد شد
+</p>
+ <button type="submit" form="subscribe-from" class="btn btn-primary">ثبت</button>
+</div>

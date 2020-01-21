@@ -1,0 +1,44 @@
+<div class="row row-center ng-scope">
+    <div class="col-md-6 col-md-offset-3">
+        <form ng-submit="searchit()" class="ng-pristine ng-valid-url ng-invalid ng-invalid-required ng-valid-pattern">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button class="btn btn-info" type="submit">جستجو</button>
+              </span>
+                <input type="text" required="" ng-model="search" value="" placeholder="عنوان ویدئو کلیپ موردنظر" class="form-control ng-pristine ng-valid-url ng-invalid ng-invalid-required ng-valid-pattern ng-touched">
+            </div>
+        </form>
+    </div>
+</div>
+<hr>
+<div ng-repeat="x in searchnames">
+<div class="row">
+  <div class="youtubesearch col-md-3" >
+            <img class="img-responsive" src="
+              {{x.snippet.thumbnails.medium.url}}
+          " />
+  </div>
+  <div class="youtubesearch col-md-9" >
+            <ul class="youtubesearchitems" style="list-style-type: none; padding-right:50px;">
+              <li>
+                <a href="https://www.youtube.com/watch?v={{x.id.videoId}}">
+                    {{x.snippet.title}}
+                </a>
+              </li>
+                <li>
+                        <button style="margin:5px 0;" class="btn btn-success" ng-click="downloadit(x.id.videoId)">دانلود این کلیپ</button>
+                </li>
+              <li>
+                  {{x.snippet.publishedAt.substring(0, 10)}}
+              </li>
+              <li>
+                {{x.snippet.channelTitle}}
+              </li>
+              <li>
+                {{x.snippet.description}}
+              </li>
+            </ul>
+  </div>
+</div>
+  <hr>
+</div>

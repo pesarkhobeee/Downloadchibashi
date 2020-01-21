@@ -1,0 +1,185 @@
+<!--
+<div class="row row-center ng-scope">
+    <div class="col-md-6 col-md-offset-3">
+        <form ng-submit="searchit()" class="ng-pristine ng-valid-url ng-invalid ng-invalid-required ng-valid-pattern">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button class="btn btn-info" type="submit">جستجو</button>
+              </span>
+                <input type="text" required="" ng-model="search" value="" placeholder="عنوان فیلم موردنظر خود را سرچ کنید" class="form-control ng-pristine ng-valid-url ng-invalid ng-invalid-required ng-valid-pattern ng-touched">
+            </div>
+        </form>
+    </div>
+</div>
+-->
+
+<div class="row row-center ng-scope">
+    <div class="col-md-6 col-md-offset-3" style="direction:ltr;text-align:left;">
+  <ui-select ng-model="movies.selected"
+             theme="bootstrap"
+             ng-disabled="disabled"
+             reset-search-input="false"
+	     on-select="searchSuggest($item)"
+style="direction:ltr;text-align:left;"
+>
+    <ui-select-match  style="direction:ltr;text-align:left;" placeholder="عنوان فیلم سینمایی موردنظر خود را وارد کنید ">{{$select.selected.value}}</ui-select-match>
+    <ui-select-choices position='down' style="direction:ltr;text-align:left;" repeat="movie in movies"
+             refresh="refreshMovies($select.search)"
+             refresh-delay="500">
+      <div style="direction:ltr;text-align:left;" ng-bind-html="movie.value | highlight: $select.search"></div>
+    </ui-select-choices>
+  </ui-select>
+    </div>
+</div>
+
+
+<hr>
+<div ng-repeat="x in searchnames">
+<div ng-class-even="'row'">
+  <div class="col-md-3" style="direction:ltr;margin-bottom:10px;">
+            <ul class="youtubesearchitems" style="list-style-type: none; padding-right:50px;">
+              <li style=''>
+                    {{x.value}}
+              </li>
+                <li>
+                        <button style="margin:5px 0;" class="btn btn-success" ng-click="getinfo(x.data)">نمایش پروفایل این فیلم</button>
+                </li>
+            </ul>
+  </div>
+  <div class="col-md-3" style="margin-bottom:10px;">
+            <div ng-if='x.image'>
+                  <img class="img-responsive" src="
+                    {{x.image}}
+                " />
+            </div>
+  </div>
+</div>
+</div>
+
+
+
+
+<div id="movieinfo" ng-show="result">
+<!-- start movie info -->
+
+<div class="row">
+        <div class="col-md-4 col-xs-12 col-sm-12">
+
+          <img id="movie-cover" style="cursor:pointer" class="img-responsive" src="{{result.cover}}" data-toggle="modal" data-target="#myModal" data-step="3" data-intro="با کلیک بر روی این عکس میتوانید پوستر را به صورت تمام صفحه مشاهده نمایید">
+
+          <!-- Modal -->
+          <div id="myModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" style="text-align:center;color:#000;direction:ltr;">{{result.title}}</h4>
+                  </div>
+                  <div class="modal-body">
+                      <img id="bigcover_loding" style="margin:0px auto" class="img-responsive" src="http://filmjoo.com/static/images/wait.gif">
+                      <img id="bigcover" style="margin:0px auto;display:none;" class="img-responsive" src="" mainsrc="{{result.bigcover}}" download="">
+                  </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-8  col-xs-12 col-sm-12">
+            <div class="row">
+                <div class="col-md-12 englishchar" style="text-align:center;">
+                    <h1 style="direction:ltr;">
+                    {{result.title}}
+                    </h1>
+                </div>
+            </div>
+            <div class="row" style="direction:rtl;">
+                <div class="col-md-6">
+                                        با امتیاز
+                        {{result.rating}}
+                        از مجموع
+                        {{result.votes}}
+                        رای
+                </div>
+                <div class="col-md-6">
+                                            در ژانر :
+
+                        {{result.genres}}
+
+                </div>
+            </div>
+            <div class="row" style="direction:rtl;">
+                <div class="col-md-6">
+                                        با زمان
+
+                        {{result.runtimes}}
+دقیقه
+<br>
+
+                </div>
+                <div class="col-md-6">
+                                            ساخته شده در :
+                      {{result.countries}}
+
+                </div>
+            </div>
+            <div class="row" style="direction:rtl;">
+                <div class="col-md-6">
+                                            کارگردان :
+
+                        {{result.directors}}
+                        <br>
+
+                </div>
+                <div class="col-md-6">
+                                            نویسنده :
+
+                      {{result.writers}}
+                        <br>
+
+                </div>
+            </div>
+
+            <div class="row">
+                    <div class="col-md-12" style="direction:rtl;margin:30px 0px;">
+			    <button style="margin:4px;"  ng-click="getclips(result.title)" data-step="4"  class="col-md-4 col-md-offset-2 col-xs-12  btn-primary btn btn-default">ویدئو کلیپ ها</button>
+                            <button style="margin:4px;"  ng-click="showsubtitle=true;searchsubtitles(result.movieid, result.title)"  data-step="5" class="col-md-4 col-xs-12 btn-primary btn btn-default" >زیر نویس های یافت شده</button>
+                            <button style="margin:4px;"  ng-click="wronginformations(result.movieid)" data-step="4"  class="col-md-4 col-xs-12 btn-primary btn btn-default">گزارش اطلاعات نادرست</button>
+                            <button style="margin:4px;"  ng-click="morality(result.movieid)" data-step="6" data-intro=" با کمک دکمه گزارش فیلم نامناسب فرهنگی و اجتماعی اگر فیلمی بنظرتان با توجه به شرایط جامعه ما نامناسب تشخیص داده شد، لطفا آن را گزارش کنید. در صورت گزارش یک فیلم از چندین کاربر ما آن را از نتایج جستجوی خود حذف خواهیم کرد. "  id="send-report-button" type="button" data-toggle="tooltip" data-placement="left" title="" class="col-md-4 col-xs-12 btn-primary btn btn-default">گزارش فیلم نامناسب اخلاقی</button>
+                            <input type="hidden" name="movie_id" id="movie_id" value="{{result.movieid}}">
+                    </div>
+                </div>
+
+
+
+            <div class="row"  ng-show="showsubtitle">
+                    <div class="col-md-12" style="direction:rtl;margin-top:10px;text-align:left;">
+			<p style="font-size:12px;dir:rtl;text-align:right;color:#F37021;">کاربر گرامی اگر زیرنویس های یافت شده با فیلم موردنظر شما مطابقت ندارد لطفا از طریق دکمه گزارش اطلاعات نادرست ما را مطلع سازید تا در کمترین زمان ممکن رسیدگی شود</p>
+				<table style="margin-top:10px;" class="table table-striped  table-hover">
+					<tbody>
+                        <caption>زیرنویس فارسی</caption>
+						<tr  ng-if="x.Persian"   ng-repeat="x in subtitles">
+							<td>
+								<a href="{{x.link}}">{{x.text}}</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<table style="margin-top:10px;" class="table table-striped  table-hover">
+					<tbody>
+                        <caption>زیرنویس انگلیسی</caption>
+						<tr  ng-repeat="x in subtitles" ng-if="x.English">
+							<td>
+								<a href="{{x.link}}">{{x.text}}</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+	            </div>
+	    </div>
+		
+	<br>
+        </div>
+    </div>
+
+<!-- end movie info -->
+</div>

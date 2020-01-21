@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="dismissModal()" aria-label="Close"><span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title" id="downloadModalLabel">انتخاب کیفیت</h4>
+</div>
+<div id="modal-body" class="modal-body">
+    <div class="row" ng-if="progress">
+        <div class="col-md-12">
+            <img id="wait-img" class="img-responsive" src="http://downloadchibashi.ir/static/wait.gif"
+                 style="display: inline;">
+            <span id="prog-msg" style="display: none;">لطفا شکیبا باشید</span>
+            <div>
+                <uib-progressbar value="progress.percent"></uib-progressbar>
+                <div style="width: 100%;">
+                    <span class="pull-left" ng-bind="progress.size"></span>
+                    <span class="pull-right" ng-bind="progress.time"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="title_thumb" style="display: block;">
+        <div class="row">
+            <div class="col-md-6">
+                <img id="thumb" class="img-responsive img-rounded" src="{{info.thumb_url}}">
+            </div>
+            <div class="col-md-6">
+                <h2 id="title" ng-bind="info.title"></h2>
+            </div>
+        </div>
+    </div>
+    <form name="download-form" ng-submit="download()">
+        <select ng-if="info.quality" style="direction: ltr; text-align: right;" class="form-control" ng-model="model.quality" ng-options="k as v for (k, v) in info.quality"></select>
+    </form>
+</div>
+<div class="modal-footer row-center">
+<p style="color:#F37021;font-size:12px;">
+توجه: استفاده از برنامه های
+<b>
+ فیلتر شکن
+</b>
+ممکن است در روند دانلود سایت اختلال ایجاد کند
+</p>
+    <button id="download-button" type="button" ng-click="download()" class="btn btn-primary">بگیر</button>
+</div>

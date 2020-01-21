@@ -1,0 +1,125 @@
+<div class="row row-center">
+    <img id="downloadchibashilogo" src="/static/downloadchibashi.png">
+
+</div>
+<div class="row row-center">
+    <div class="col-md-6 col-md-offset-3">
+        <form ng-submit="getInfo()">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button type=submit id="submit_search" class="btn btn-primary">دانلود</button>
+              </span>
+                <input type="url" id="url" class="form-control" pattern=".*\..*" placeholder="آدرس مورد نظر" value="" ng-model="model.url" required>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3" id="alert-div">
+    </div>
+</div>
+<div class="col-md-12">
+<div class="row" ng-if="downloads.length">
+    <div class="col-md-6 col-md-offset-3">
+        <table class="table">
+            <thead>
+            <tr>
+		              <th>دیگر کیفیت ها</th>
+                <th>عنوان</th>
+ <!--               <th>درخواست های جدید</th> -->
+                <th>ویدیو</th>
+                <th>حجم</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="download in downloads">
+		    <td class="text-center">
+			<button  class="btn"  ng-click="openHistoricSelectQualityModal(download.url)">درخواست مجدد</button>
+		    </td>
+      <td>
+        {{download.title}}
+      </td>
+<!--
+                    <td class="text-center">
+			<a href="/media/zipit/{{download.folder}}">فایل زیپ شده</a>
+
+			                              <a href="#" ng-click="openZipModal()" >فایل زیپ شده</a>
+                    </td>
+-->
+                    <td class="text-center">
+
+                        <a ng-href="{{download.folder}}" target="_blank">پوشه فشرده نشده</a>
+
+                    </td>
+                    <td class="text-center" ng-bind="download.size"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+     <div style="margin: 35px 0px;" id="services" class="text-center">
+                 <!--
+	<div id="danger" style="margin-bottom: 25px;">
+      		<p>
+                  کلیپ‌های دانلودی شما تا حداکثر ۵ ساعت در  حالت عمومی دانلود‌چی‌باشی می‌ماند.
+              </p>
+
+  	</div>
+      
+   <div class="alert alert-info" role="alert">
+       <div class="row row-center">
+            <div class="col-md-12">
+
+               
+                با عضویت در بخش
+                <b>
+                    <a style="color:#F37021" href="" ng-click="openSignUpModal()">
+                کاربران ویژه 
+                    </a>
+                </b>
+                میتوانید از امکان دانلود لینک های 
+                <b style="color:#F37021">
+                تورنت، مگنت، توییتر ویدئو، یوتیوب چنل ودایرکت دانلود
+                </b>
+                نیز بهره ببرید.
+                <br>
+                همچنین فایل های دانلودی شما تا حداقل 
+                <b style="color:#F37021"> ۵۰ </b>
+                ساعت در ان بخش نگه داری خواهد شد.
+                
+            </div>
+        </div>
+   </div>
+   -->
+            <span>
+                دانلود تک فایل های چند رسانه ای از این سایت ها  به صورت رایگان پشتیبانی می شود:
+            </span>
+            <div class="services_item" style="margin: 25px auto;">
+                <i  class="fa fa-soundcloud fa-4x"></i>
+
+                <i  class="fa fa-vimeo fa-4x"></i>
+
+                <i  class="fa fa-youtube fa-4x"></i>
+
+                <i  class="fa fa-facebook fa-4x"></i>
+
+
+            </div>
+        </div>
+    </div>
+
+<div class="row row-center">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="alert alert-info alert-dismissible fade in" id="social" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <p>سیبیلا رو نیگا، حیف این سیبیلا نیست به دوستات معرفیش نکنی؟</p>
+            <a class="btn btn-social-icon btn-facebook" href="https://www.facebook.com/sharer/sharer.php?u=downloadchibashi.ir" target="_blank">
+                <i class="fa fa-facebook"></i>
+            </a>
+            <a class="btn btn-social-icon btn-twitter" href="https://twitter.com/intent/tweet?button_hashtag=downloadchibashi&text=%D8%AF%D8%A7%D9%86%D9%84%D9%88%D8%AF%20%D8%A2%D8%B3%D8%A7%D9%86%20%DA%A9%D9%84%DB%8C%D9%BE%E2%80%8C%D9%87%D8%A7%DB%8C%20%DB%8C%D9%88%D8%AA%DB%8C%D9%88%D8%A8%20%D8%A8%D8%A7%20downloadchibashi.ir" data-hashtags="downloadchibashi" target="_blank">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </div>
+    </div>
+</div>
