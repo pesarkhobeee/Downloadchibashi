@@ -35,6 +35,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+static/ui/dist
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -200,3 +201,9 @@ static/downloads
 node_modules/
 Modules/
 bower_components/
+static/ui/package-lock.json
+static/ui/node_modules/
+static/ui/bower_components/
+
+# IDEs and Editors
+.idea/

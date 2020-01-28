@@ -44,6 +44,19 @@ python2.7 -m virtualenv env
 source env/bin/activate
 ```
 
+#### Frontend
+The frontend app is developed using AngularJS. You can find source files in `static/ui` folder. 
+```
+# installing frontend app dependencies
+bower install
+
+# intalling frontend minification dependencies
+npm install
+
+# minifiying frontend app
+npm run build
+```
+
 ### Production Environment
 
 For production you can use docker and docker-compose, but before running it you should change **Domain** name which is **downloadchibashi.ir**
