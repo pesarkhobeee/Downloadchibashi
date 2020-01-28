@@ -1,0 +1,19 @@
+{
+  "name": "downloadchibashi",
+  "version": "1.0.0",
+  "description": "DownloadChiBashi is a simple python Web Interface based on Flask framework for youtube-dl.",
+  "main": "dist/app.min.js",
+  "scripts": {
+    "build": "gulp scripts"
+  },
+  "author": "Farid Ahmadian",
+  "license": "MIT",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-ng-annotate": "^2.1.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2"
+  }
+}
